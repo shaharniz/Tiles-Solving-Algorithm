@@ -1,0 +1,63 @@
+"""
+State Space:
+All possible arrangements of a 3x3 grid (numpy array) containing "tiles" (cells) numbered from 0 to 8 that are solvable.
+The total number of solvable states is 9!/2 = 181,440 because of the parity property (See course guide page 52, course book pages 86, 115).
+
+Initial State:
+The initial state is provided by the user as command line arguments numbered from 0 to 8 (for example: Tiles.py 1 4 0 5 8 2 3 6 7).
+If the input is valid (matches one of the state spaces), it will be represented as a 3x3 grid.
+The number 0 represents the empty tile.
+
+Target State: 
+Tiles grid ordered as such -
+[[0, 1, 2],
+ [3, 4, 5],
+ [6, 7, 8]]
+
+Actions:
+Moving the empty tile (0) in one of four directions (if allowed) - ['UP', 'DOWN', 'LEFT', 'RIGHT']
+An action is allowed if the empty tile is not on the edge of the grid in the direction of the move.
+For an uninformed search, we will take actions in the following order: 'LEFT', 'RIGHT', 'UP', 'DOWN'.
+
+Transition Model:
+Applying an action to a state results in a new state where the empty tile (0) has swapped places with the adjacent tile in the direction of the move (if the action is allowed).
+For example, if in a state the 0 tile is at position (1,1) and the action 'LEFT' is applied, the new state will swap it with the tile at (1,0).
+
+Cost Function:
+Each action costs 1.
+"""
+import numpy as np
+
+class Tiles8Puzzle:
+
+    _total_cost = 0
+
+    def __init__(self, initial_state, target_state):
+        # TODO: Validate initial_state & target_state
+        self.state = initial_state
+        self.target_state = target_state
+   
+    def check_goal_state(self):
+        return np.array_equal(self.state, self.target_state)
+
+    def get_possible_actions(self, state):
+        pass
+
+    def transition(self, state, action):
+        # TODO
+        self.total_cost += 1
+
+    def cost_function(self, state, action):
+        pass
+
+    @property
+    def total_cost(self):
+        return self._total_cost
+    
+
+
+target_state = np.array([[0, 1, 2],[3, 4, 5],[6, 7, 8]])
+
+if __name__ == "__main__":
+    tiles = Tiles8Puzzle(None, target_state)
+    # TODO
