@@ -1,4 +1,6 @@
 """
+8Puzzle 
+
 State Space:
 All possible arrangements of a 3x3 grid (numpy array) containing "tiles" (cells) numbered from 0 to 8 that are solvable.
 The total number of solvable states is 9!/2 = 181,440 because of the parity property (See course guide page 52, course book pages 86, 115).
@@ -27,37 +29,9 @@ Cost Function:
 Each action costs 1.
 """
 import numpy as np
+from eight_puzzle import EightPuzzle
 
-class Tiles8Puzzle:
-
-    _total_cost = 0
-
-    def __init__(self, initial_state, target_state):
-        # TODO: Validate initial_state & target_state
-        self.state = initial_state
-        self.target_state = target_state
-   
-    def check_goal_state(self):
-        return np.array_equal(self.state, self.target_state)
-
-    def get_possible_actions(self, state):
-        pass
-
-    def transition(self, state, action):
-        # TODO
-        self.total_cost += 1
-
-    def cost_function(self, state, action):
-        pass
-
-    @property
-    def total_cost(self):
-        return self._total_cost
-    
-
-
-target_state = np.array([[0, 1, 2],[3, 4, 5],[6, 7, 8]])
 
 if __name__ == "__main__":
-    tiles = Tiles8Puzzle(None, target_state)
+    tiles = EightPuzzle(None)
     # TODO
