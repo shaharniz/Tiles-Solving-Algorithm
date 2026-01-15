@@ -1,4 +1,11 @@
 import numpy as np
+from enum import Enum
+
+class Directions(Enum):
+    UP = (-1, 0)
+    DOWN = (1, 0)
+    LEFT = (0, -1)
+    RIGHT = (0, 1)
 
 class EightPuzzle:
 
@@ -45,19 +52,26 @@ class EightPuzzle:
         possible_actions = set()
         row, col = np.argwhere(self.state == 0)[0]
         
-        if row > 0:
-            possible_actions.add('UP')
-        if row < 2:
-            possible_actions.add('DOWN')
-        if col > 0:
-            possible_actions.add('LEFT')
-        if col < 2:
-            possible_actions.add('RIGHT')
+        for direction in Directions:
+            dr, dc = direction.value
+            nr, nc = row + dr, col + dc
+            if 0 <= nr < 3 and 0 <= nc < 3:
+                possible_actions.add(direction)
 
         return possible_actions
     
     def transition(self, action):
-        # TODO
+        if action not in self.get_possible_actions():
+            raise ValueError(f"Action <{action}> of type {type(action)} is not valid for current state: {self.state}")
+        
+        row, col = np.argwhere(self.state == 0)[0]
+        dr, dc = action.value
+        nr, nc = row + dr, col + dc
+
+        new_state = self.state.copy()
+        new_state[row, col], new_state[nr, nc] = new_state[nr, nc], new_state[row, col]
+        self.state = new_state
+
         self.total_cost += 1
 
     def cost_function(self, state, action):
@@ -66,3 +80,8 @@ class EightPuzzle:
     @property
     def total_cost(self):
         return self._total_cost
+    
+    @total_cost.setter
+    def total_cost(self, cost):
+        self._total_cost = cost
+
