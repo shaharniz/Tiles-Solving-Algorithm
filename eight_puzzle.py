@@ -42,8 +42,20 @@ class EightPuzzle:
         return inversions
 
     def get_possible_actions(self):
-        pass
+        possible_actions = set()
+        row, col = np.argwhere(self.state == 0)[0]
+        
+        if row > 0:
+            possible_actions.add('UP')
+        if row < 2:
+            possible_actions.add('DOWN')
+        if col > 0:
+            possible_actions.add('LEFT')
+        if col < 2:
+            possible_actions.add('RIGHT')
 
+        return possible_actions
+    
     def transition(self, state, action):
         # TODO
         self.total_cost += 1
