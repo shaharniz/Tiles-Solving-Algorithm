@@ -60,5 +60,24 @@ class TestEightPuzzle(unittest.TestCase):
         puzzle = EightPuzzle(initial_state)
         assert puzzle.get_possible_actions() == {'DOWN', 'LEFT'}
 
+    def test_valid_transition(self):
+        initial_state = np.array([[1, 2, 3],
+                                  [4, 5, 6],
+                                  [7, 0, 8]])
+        puzzle = EightPuzzle(initial_state)
+        new_state = puzzle.transition('UP')
+        expected_state = np.array([[1, 2, 3],
+                                   [4, 0, 6],
+                                   [7, 5, 8]])
+        self.assertTrue(np.array_equal(new_state, expected_state))
+        
+    def test_invalid_transition(self):
+        initial_state = np.array([[1, 2, 3],
+                                  [4, 5, 6],
+                                  [7, 0, 8]])
+        with self.assertRaises(IndexError):
+            EightPuzzle(initial_state).transition('DOWN')
+        
+
 if __name__ == '__main__':
     unittest.main()

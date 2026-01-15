@@ -12,7 +12,7 @@ class EightPuzzle:
         self._validate_initial_state()
    
     def _validate_initial_state(self):
-        """Check if a state is 3x3 and solvable."""
+        """Check if a initial state is 3x3 and solvable."""
         state = self.state
 
         # Validate type and shape
@@ -26,7 +26,7 @@ class EightPuzzle:
         
         # Validate solvability
         if not self.count_inversions() % 2 == 0:
-            raise ValueError("State is not solvable")
+            raise ValueError("Initial state is not solvable")
 
     def count_inversions(self):
         """Count inversions in the puzzle state.""" 
@@ -56,7 +56,7 @@ class EightPuzzle:
 
         return possible_actions
     
-    def transition(self, state, action):
+    def transition(self, action):
         # TODO
         self.total_cost += 1
 
