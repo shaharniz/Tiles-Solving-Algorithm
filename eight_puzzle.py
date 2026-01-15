@@ -26,7 +26,7 @@ class EightPuzzle:
         if not isinstance(state, np.ndarray):
             raise TypeError("Initial state must be a NumPy array")
         if state.ndim != 2:
-            raise ValueError("Initial state must have one 2 dimension")
+            raise ValueError("Initial state must have 2 dimension")
         rows, cols = state.shape
         if rows != cols or rows != 3:
             raise ValueError("Initial state must be 3x3 grid")
@@ -72,7 +72,7 @@ class EightPuzzle:
         new_state[row, col], new_state[nr, nc] = new_state[nr, nc], new_state[row, col]
         self.state = new_state
 
-        self.total_cost += 1
+        self._total_cost += 1
 
     def cost_function(self, state, action):
         pass
@@ -80,8 +80,5 @@ class EightPuzzle:
     @property
     def total_cost(self):
         return self._total_cost
-    
-    @total_cost.setter
-    def total_cost(self, cost):
-        self._total_cost = cost
+
 

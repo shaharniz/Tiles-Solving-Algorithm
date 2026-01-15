@@ -78,6 +78,16 @@ class TestEightPuzzle(unittest.TestCase):
         with self.assertRaises(ValueError):
             EightPuzzle(initial_state).transition(Directions.DOWN)
         
+    def test_total_cost_counting(self):
+        initial_state = np.array([[1, 2, 3],
+                                  [4, 5, 6],
+                                  [7, 0, 8]])
+        puzzle = EightPuzzle(initial_state)
+        puzzle.transition(Directions.UP)
+        puzzle.transition(Directions.UP)
+        puzzle.transition(Directions.LEFT)
+
+        assert puzzle._total_cost == 3
 
 if __name__ == '__main__':
     unittest.main()
