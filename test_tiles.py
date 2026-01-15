@@ -31,12 +31,34 @@ class TestEightPuzzle(unittest.TestCase):
         with self.assertRaises(ValueError):
             EightPuzzle(initial_state)
 
-    def test_goal_state_check(self):
-        goal_state = np.array([[0, 1, 2],
-                               [3, 4, 5],
-                               [6, 7, 8]])
-        puzzle = EightPuzzle(goal_state)
-        self.assertTrue(puzzle.check_goal_state())
+    def test_count_inversions(self):
+        initial_state = np.array([[0, 1, 2],
+                                  [3, 4, 5],
+                                  [6, 7, 8]])
+        puzzle = EightPuzzle(initial_state)
+        inversions = puzzle.count_inversions()
+        self.assertEqual(inversions, 0)
+
+    def test_get_possible_actions_center(self):
+        initial_state = np.array([[4, 3, 2],
+                                  [1, 0, 5],
+                                  [6, 7, 8]])
+        puzzle = EightPuzzle(initial_state)
+        assert puzzle.get_possible_actions() == {'UP', 'DOWN', 'LEFT', 'RIGHT'}
+
+    def test_get_possible_actions_left_edge(self):
+        initial_state = np.array([[4, 3, 2],
+                                  [0, 1, 5],
+                                  [6, 7, 8]])
+        puzzle = EightPuzzle(initial_state)
+        assert puzzle.get_possible_actions() == {'UP', 'DOWN', 'RIGHT'}
+
+    def test_get_possible_actions_top_right_corner(self):
+        initial_state = np.array([[4, 5, 0],
+                                  [1, 2, 3],
+                                  [6, 7, 8]])
+        puzzle = EightPuzzle(initial_state)
+        assert puzzle.get_possible_actions() == {'DOWN', 'LEFT'}
 
 if __name__ == '__main__':
     unittest.main()

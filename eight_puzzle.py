@@ -40,11 +40,8 @@ class EightPuzzle:
                     inversions += 1
 
         return inversions
-    
-    def check_goal_state(self):
-        return np.array_equal(self.state, self.target_state)
 
-    def get_possible_actions(self, state):
+    def get_possible_actions(self):
         pass
 
     def transition(self, state, action):

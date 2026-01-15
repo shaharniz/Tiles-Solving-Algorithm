@@ -17,7 +17,7 @@ Tiles grid ordered as such -
  [6, 7, 8]]
 
 Actions:
-Moving the empty tile (0) in one of four directions (if allowed) - ['UP', 'DOWN', 'LEFT', 'RIGHT']
+Moving the empty tile (0) in one of four directions (if allowed) - {'UP', 'DOWN', 'LEFT', 'RIGHT'}
 An action is allowed if the empty tile is not on the edge of the grid in the direction of the move.
 For an uninformed search, we will take actions in the following order: 'LEFT', 'RIGHT', 'UP', 'DOWN'.
 
