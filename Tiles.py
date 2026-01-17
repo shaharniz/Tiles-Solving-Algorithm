@@ -44,7 +44,7 @@ def main(argv):
     initial_state = np.array(numbers).reshape(3, 3)
     tiles = EightPuzzle(initial_state)
 
-    print(tiles.state)
+    # TODO
 
 if __name__ == "__main__":
     main(sys.argv)
