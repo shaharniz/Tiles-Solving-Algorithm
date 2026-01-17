@@ -74,9 +74,6 @@ class EightPuzzle:
 
         self._total_cost += 1
 
-    def cost_function(self, state, action):
-        pass
-
     @property
     def total_cost(self):
         return self._total_cost

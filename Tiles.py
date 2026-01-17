@@ -28,10 +28,23 @@ For example, if in a state the 0 tile is at position (1,1) and the action 'LEFT'
 Cost Function:
 Each action costs 1.
 """
+import sys
 import numpy as np
 from eight_puzzle import EightPuzzle
 
 
+def main(argv):
+    try:
+        numbers = list(map(int, argv[1:]))
+        if len(argv) != 10 or set(numbers) != set(range(9)):
+            raise ValueError
+    except ValueError:
+        raise ValueError("Expected 9 arguments that must contain each integers from 0 to 8 exactly once.")
+
+    initial_state = np.array(numbers).reshape(3, 3)
+    tiles = EightPuzzle(initial_state)
+
+    print(tiles.state)
+
 if __name__ == "__main__":
-    tiles = EightPuzzle(None)
-    # TODO
+    main(sys.argv)
