@@ -17,13 +17,13 @@ Tiles grid ordered as such -
  [6, 7, 8]]
 
 Actions:
-Moving the empty tile (0) in one of four directions (if allowed) - {'UP', 'DOWN', 'LEFT', 'RIGHT'}
+Moving the empty tile (0) in one of four directions (if allowed) - UP, DOWN, LEFT and RIGHT
 An action is allowed if the empty tile is not on the edge of the grid in the direction of the move.
-For an uninformed search, we will take actions in the following order: 'LEFT', 'RIGHT', 'UP', 'DOWN'.
+For an uninformed search, we will take actions in the following order: LEFT, RIGHT, UP, DOWN.
 
 Transition Model:
 Applying an action to a state results in a new state where the empty tile (0) has swapped places with the adjacent tile in the direction of the move (if the action is allowed).
-For example, if in a state the 0 tile is at position (1,1) and the action 'LEFT' is applied, the new state will swap it with the tile at (1,0).
+For example, if in a state the 0 tile is at position (1,1) and the action LEFT is applied, the new state will swap it with the tile at (1,0).
 
 Cost Function:
 Each action costs 1.
