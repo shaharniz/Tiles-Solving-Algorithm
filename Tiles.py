@@ -42,8 +42,8 @@ def main(argv):
     except ValueError:
         raise ValueError("Expected 9 arguments that must contain each integers from 0 to 8 exactly once.")
 
-    initial_state = np.array(numbers).reshape(3, 3)
-    tiles = EightPuzzle(initial_state)
+    initial_state = np.array(numbers, dtype=np.uint8).reshape(3, 3)
+    EightPuzzle.validate_state_solvability(initial_state)
 
     # TODO
 
