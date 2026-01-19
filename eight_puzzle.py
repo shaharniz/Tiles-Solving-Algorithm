@@ -9,35 +9,34 @@ class Directions(Enum):
 
 class EightPuzzle:
 
-    target_state = np.array([[0, 1, 2],
-                             [3, 4, 5],
-                             [6, 7, 8]])
-    _total_cost = 0
+    _target_state = np.array([[0, 1, 2],
+                              [3, 4, 5],
+                              [6, 7, 8]])
 
-    def __init__(self, initial_state):
-        self.state = initial_state
-        self._validate_initial_state()
+    def __init__(self):
+        pass
    
-    def _validate_initial_state(self):
-        """Check if a initial state is 3x3 and solvable."""
-        state = self.state
+    @staticmethod
+    def validate_state_solvability(state):
+        """Check if a state is 3x3 and solvable."""
 
         # Validate type and shape
         if not isinstance(state, np.ndarray):
-            raise TypeError("Initial state must be a NumPy array")
+            raise TypeError("State must be a NumPy array")
         if state.ndim != 2:
-            raise ValueError("Initial state must have 2 dimension")
+            raise ValueError("State must have 2 dimension")
         rows, cols = state.shape
         if rows != cols or rows != 3:
-            raise ValueError("Initial state must be 3x3 grid")
+            raise ValueError("State must be 3x3 grid")
         
         # Validate solvability
-        if not self.count_inversions() % 2 == 0:
-            raise ValueError("Initial state is not solvable")
+        if not EightPuzzle.count_inversions(state) % 2 == 0:
+            raise ValueError("State is not solvable")
 
-    def count_inversions(self):
+    @staticmethod
+    def count_inversions(state):
         """Count inversions in the puzzle state.""" 
-        flat = self.state.flatten()
+        flat = state.flatten()
         # Remove the empty tile
         flat = [x for x in flat if x != 0]
         inversions = 0
@@ -48,9 +47,10 @@ class EightPuzzle:
 
         return inversions
 
-    def get_possible_actions(self):
+    @staticmethod
+    def get_possible_actions(state):
         possible_actions = set()
-        row, col = np.argwhere(self.state == 0)[0]
+        row, col = np.argwhere(state == 0)[0]
         
         for direction in Directions:
             dr, dc = direction.value
@@ -60,22 +60,31 @@ class EightPuzzle:
 
         return possible_actions
     
-    def transition(self, action):
-        if action not in self.get_possible_actions():
-            raise ValueError(f"Action <{action}> of type {type(action)} is not valid for current state: {self.state}")
+    @staticmethod
+    def transition(state, action):
+        if action not in EightPuzzle.get_possible_actions(state):
+            raise ValueError(f"Action <{action}> of type {type(action)} is not valid for current state: {state}")
         
-        row, col = np.argwhere(self.state == 0)[0]
+        row, col = np.argwhere(state == 0)[0]
         dr, dc = action.value
         nr, nc = row + dr, col + dc
 
-        new_state = self.state.copy()
+        new_state = state.copy()
         new_state[row, col], new_state[nr, nc] = new_state[nr, nc], new_state[row, col]
-        self.state = new_state
+        
+        return new_state
 
-        self._total_cost += 1
+    @staticmethod
+    def get_successors(state):
+        successors = []
 
-    @property
-    def total_cost(self):
-        return self._total_cost
+        for action in EightPuzzle.get_possible_actions(state):
+            new_state = EightPuzzle.transition(state, action)
+            successors.append((action, new_state))
 
+        return successors
+    
+    @staticmethod
+    def is_goal(state):
+        return np.array_equal(EightPuzzle._target_state, state)
 
