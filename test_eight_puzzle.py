@@ -86,6 +86,13 @@ class TestEightPuzzle(unittest.TestCase):
             },
         )
 
+    def test_is_goal_valid(self):
+        the_goal = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
+        assert EightPuzzle.is_goal(the_goal)
+
+    def test_is_goal_valid(self):
+        not_the_goal = np.array([[3, 4, 5], [0, 1, 2], [6, 7, 8]], dtype=np.uint8)
+        assert not EightPuzzle.is_goal(not_the_goal)
 
 if __name__ == "__main__":
     unittest.main()
