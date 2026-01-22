@@ -13,7 +13,7 @@ class Actions(Enum):
 class EightPuzzle:
     """
     Stateless definition of the 8puzzle problem.
-    Provides goal test, successor generation, and state validation.
+    Provides goal test, successor generation, inversions counting and state solvability validation.
     """
 
     _target_state = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
@@ -60,6 +60,13 @@ class EightPuzzle:
         return inversions
 
     @staticmethod
+    def _get_action_as_step(prev_state, new_state):
+        diff = prev_state.astype(np.int8) - new_state.astype(np.int8)
+        positive_nonzero = np.max(diff)
+
+        return str(positive_nonzero)
+
+    @staticmethod
     def get_successors(state):
         successors = {}
 
@@ -77,7 +84,8 @@ class EightPuzzle:
                     new_state[row, col],
                 )
 
-                successors[action] = new_state
+                step = EightPuzzle._get_action_as_step(state, new_state)
+                successors[step] = new_state
 
         return successors
 

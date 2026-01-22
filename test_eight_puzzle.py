@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from eight_puzzle import EightPuzzle, Actions
+from eight_puzzle import EightPuzzle
 
 
 class TestEightPuzzle(unittest.TestCase):
@@ -39,10 +39,21 @@ class TestEightPuzzle(unittest.TestCase):
         with self.assertRaises(ValueError):
             EightPuzzle.validate_state_solvability(state)
 
-    def test_count_inversions(self):
+    def test_count_inversions_without_inversions(self):
         state = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
         inversions = EightPuzzle.count_inversions(state)
         self.assertEqual(inversions, 0)
+
+    def test_count_inversions_with_inversions(self):
+        state = np.array([[1, 2, 3], [4, 6, 5], [7, 0, 8]], dtype=np.uint8)
+        inversions = EightPuzzle.count_inversions(state)
+        self.assertEqual(inversions, 1)
+
+    def test_get_actions_as_step(self):
+        prev_state = np.array([[1, 2, 3], [4, 0, 5], [6, 7, 8]], dtype=np.uint8)
+        new_state = np.array([[1, 2, 3], [0, 4, 5], [6, 7, 8]], dtype=np.uint8)
+        step = EightPuzzle._get_action_as_step(prev_state, new_state)
+        self.assertEqual(step, '4')
 
     def test_get_successors_center(self):
         state = np.array([[4, 3, 2], [1, 0, 5], [6, 7, 8]], dtype=np.uint8)
@@ -52,12 +63,7 @@ class TestEightPuzzle(unittest.TestCase):
         successor_right = np.array([[4, 3, 2], [1, 5, 0], [6, 7, 8]], dtype=np.uint8)
         np.testing.assert_equal(
             EightPuzzle.get_successors(state),
-            {
-                Actions.UP: successor_up,
-                Actions.DOWN: successor_down,
-                Actions.LEFT: successor_left,
-                Actions.RIGHT: successor_right,
-            },
+            {'3': successor_up, '7': successor_down, '1': successor_left, '5': successor_right},
         )
 
     def test_get_successors_left_edge(self):
@@ -67,11 +73,7 @@ class TestEightPuzzle(unittest.TestCase):
         successor_right = np.array([[4, 3, 2], [1, 0, 5], [6, 7, 8]], dtype=np.uint8)
         np.testing.assert_equal(
             EightPuzzle.get_successors(state),
-            {
-                Actions.UP: successor_up,
-                Actions.DOWN: successor_down,
-                Actions.RIGHT: successor_right,
-            },
+            {'4': successor_up, '6': successor_down, '1': successor_right},
         )
 
     def test_get_successors_top_right_corner(self):
@@ -80,10 +82,7 @@ class TestEightPuzzle(unittest.TestCase):
         successor_left = np.array([[4, 0, 5], [1, 2, 3], [6, 7, 8]], dtype=np.uint8)
         np.testing.assert_equal(
             EightPuzzle.get_successors(state),
-            {
-                Actions.DOWN: successor_down,
-                Actions.LEFT: successor_left,
-            },
+            {'3': successor_down, '5': successor_left},
         )
 
     def test_is_goal_valid(self):
@@ -93,6 +92,7 @@ class TestEightPuzzle(unittest.TestCase):
     def test_is_goal_invalid(self):
         not_the_goal = np.array([[3, 4, 5], [0, 1, 2], [6, 7, 8]], dtype=np.uint8)
         assert not EightPuzzle.is_goal(not_the_goal)
+
 
 if __name__ == "__main__":
     unittest.main()

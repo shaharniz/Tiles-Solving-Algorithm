@@ -1,36 +1,59 @@
 from collections import deque
+from eight_puzzle import EightPuzzle
+
 
 class Node:
-    def __init__(self, state, parent=None, action=None, cost=0):
+    def __init__(self, state, parent=None, step=None, cost=0):
         self.state = state
         self.parent = parent
-        self.action = action
+        self.step = step
         self.cost = cost
 
-def bfs(puzzle):
-    root = Node(puzzle.state)
+
+def print_path(node):
+    path = []
+    while node:
+        if node.step is not None:
+            path.append(node.step)
+        node = node.parent
+    path.reverse()
+    print("Path:", " ".join(path))
+
+
+def bfs(initial_state):
+    print("Algorithm: BFS")
+    EightPuzzle.validate_state_solvability(initial_state)
+
+    root = Node(state=initial_state)
     queue = deque([root])
-    path = set()
+    explored = set()
+    expanded_count = 0
 
     while queue:
         node = queue.popleft()
+        state_key = node.state.tobytes()  # Converting state to bytes for hashing
 
-        if node.is_goal(node.state):
-            return node
+        if state_key in explored:
+            continue
 
-        path.add(node.state)
+        explored.add(state_key)
+        expanded_count += 1
 
-        for action, next_state in puzzle.get_successors(node.state):
-            if next_state not in path:
-                child = Node(
-                    state=next_state,
-                    parent=node,
-                    action=action,
-                    cost=node.cost + 1
-                )
-                queue.append(child)
+        if EightPuzzle.is_goal(node.state):
+            print_path(node)
+            print(f"Length: {node.cost}")
+            print(f"Expanded: {expanded_count}")
+            return
 
-    return None  # no solution
+        for step, next_state in EightPuzzle.get_successors(node.state).items():
+            child = Node(
+                state=next_state,
+                parent=node,
+                step=step,
+                cost=node.cost + 1,
+            )
+            queue.append(child)
+
 
 def astar():
     pass
