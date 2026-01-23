@@ -7,7 +7,7 @@ from astar_algorithm import astar
 silence = patch("sys.stdout", new_callable=StringIO)  # Decorator to silence test prints
 
 class TestAStarAlgorithm(unittest.TestCase):
-
+    pass
     # @silence
     # def test_astar_with_solvable_state(self, _):
     #     initial_state = np.array([[1, 2, 3], [4, 5, 6], [0, 7, 8]], dtype=np.uint8)
