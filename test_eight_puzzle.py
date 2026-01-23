@@ -6,36 +6,36 @@ from eight_puzzle import EightPuzzle
 class TestEightPuzzle(unittest.TestCase):
 
     def test_validate_state_solvability_solvable_state(self):
-        state = np.array([[1, 2, 3], [4, 5, 6], [7, 0, 8]], dtype=np.uint8)
+        state = np.array([[1, 2, 3], [4, 5, 6], [7, 0, 8]], dtype=np.uint8)  # Inversions count is even => solvable
         self.assertTrue(EightPuzzle.validate_state_solvability(state))
 
+    def test_validate_state_solvability_unsolvable_state(self):
+        state = np.array([[1, 2, 3], [4, 6, 5], [7, 0, 8]], dtype=np.uint8)  # Inversions count is odd => unsolvable
+        with self.assertRaises(ValueError):
+            EightPuzzle.validate_state_solvability(state)
+
     def test_validate_state_solvability_invalid_shape(self):
-        state = np.array([[1, 2, 3], [4, 5, 6]], dtype=np.uint8)
+        state = np.array([[1, 2, 3], [4, 5, 6]], dtype=np.uint8)  # Shape is not 3x3
         with self.assertRaises(ValueError):
             EightPuzzle.validate_state_solvability(state)
 
     def test_validate_state_solvability_invalid_type(self):
-        state = [[1, 2, 3], [4, 5, 6], [7, 0, 8]]
+        state = [[1, 2, 3], [4, 5, 6], [7, 0, 8]]  # Not a numpy array
+        with self.assertRaises(TypeError):
+            EightPuzzle.validate_state_solvability(state)
+
+    def test_validate_state_solvability_invalid_subtype(self):
+        state = np.array([[1, "two", 3], [4, 5, 6], [7, 8, 0]])  # Non-integer subtype
         with self.assertRaises(TypeError):
             EightPuzzle.validate_state_solvability(state)
 
     def test_validate_state_solvability_invalid_digit(self):
-        state = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], dtype=np.uint8)
+        state = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], dtype=np.uint8)  # Invalid digit 9
         with self.assertRaises(ValueError):
-            EightPuzzle.validate_state_solvability(state)
-
-    def test_validate_state_solvability_invalid_subtype(self):
-        state = np.array([[1, "two", 3], [4, 5, 6], [7, 8, 0]])
-        with self.assertRaises(TypeError):
             EightPuzzle.validate_state_solvability(state)
 
     def test_validate_state_solvability_duplicate_values(self):
-        state = np.array([[1, 2, 3], [4, 5, 6], [7, 7, 0]], dtype=np.uint8)
-        with self.assertRaises(ValueError):
-            EightPuzzle.validate_state_solvability(state)
-
-    def test_validate_state_solvability_unsolvable_state(self):
-        state = np.array([[1, 2, 3], [4, 6, 5], [7, 0, 8]], dtype=np.uint8)
+        state = np.array([[1, 2, 3], [4, 5, 6], [7, 7, 0]], dtype=np.uint8)  # Duplicate value 7
         with self.assertRaises(ValueError):
             EightPuzzle.validate_state_solvability(state)
 

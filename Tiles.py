@@ -31,7 +31,8 @@ Each action costs 1.
 import sys
 import numpy as np
 from eight_puzzle import EightPuzzle
-from search_algorithms import bfs, astar
+from bfs_algorithm import bfs
+from astar_algorithm import astar
 
 
 def main(argv):

@@ -1,9 +1,14 @@
 import unittest
+from unittest.mock import patch
+from io import StringIO
 from Tiles import main
+
+silence = patch("sys.stdout", new_callable=StringIO)  # Decorator to silence test prints
 
 class TestTilesMain(unittest.TestCase):
     
-    def test_valid_input_no_error(self):
+    @silence
+    def test_valid_input_no_error(self, _):
         argv = ["Tiles.py", "1","2","3","4","5","6","7","8","0"]
         try:
             main(argv)
