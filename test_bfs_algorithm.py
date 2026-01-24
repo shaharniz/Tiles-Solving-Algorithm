@@ -145,6 +145,23 @@ class TestBFSAlgorithm(unittest.TestCase):
 
         self.assertEqual(actual_output_lines, expectet_output_lines)
 
+    @silence
+    def test_bfs_solution_path_5(self, mock_stdout):
+        self.maxDiff = None  # Shows full prints diff on failure
+        initial_state = np.array([[8, 6, 7], [2, 5, 4], [3, 0, 1]], dtype=np.uint8)
+        
+        expectet_output_lines = [
+            "Algorithm: BFS",
+            "Path: 5 4 1 5 4 6 8 2 3 4 6 8 2 3 4 6 8 1 7 2 1 7 5 8 7 4 3",
+            "Length: 27",
+            "Expanded: 170471",
+        ]
+        
+        bfs(initial_state)
+        actual_output_lines = mock_stdout.getvalue().strip().split("\n")
+
+        self.assertEqual(actual_output_lines, expectet_output_lines)
+
 
 if __name__ == "__main__":
     unittest.main()
