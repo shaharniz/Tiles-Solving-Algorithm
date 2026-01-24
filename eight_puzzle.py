@@ -113,6 +113,12 @@ class EightPuzzle:
 
     @staticmethod
     def linear_conflicts_heuristic(state):
+        """
+        The idea is to calculate the Manhattan distance and add 2 times the number of linear conflicts.
+        A linear conflict occurs when two tiles are in their goal row or column but are reversed relative to their goal positions.
+        The linear conflicts are multiplied by 2 because each conflict will require at least two moves, additional to the Manhattan distance, to solve the puzzle (moving away from the current row/col to resolve the reversed positions and returning back).
+        Both row and column conflicts are considered because they are independent (if a tile is in it's goal row and column then ther's no conflict).
+        """
         manhattan_distance = 0
         linear_conflicts = 0
 
