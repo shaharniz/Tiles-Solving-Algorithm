@@ -67,6 +67,24 @@ class EightPuzzle:
         return str(positive_nonzero)
 
     @staticmethod
+    def _count_conflicts(line):
+        if not line:
+            return 0
+        
+        n = len(line)
+
+        # Calculating Longest Increasing Subsequence (LIS) length
+        # Initializing dp, so that dp[i] will represent the length of LIS ending at index i
+        dp = [1] * n
+        for curr in range(1, n):
+            for prev in range(curr):
+                if line[prev] < line[curr]:
+                    dp[curr] = max(dp[curr], dp[prev] + 1)
+        
+        lis_length = max(dp)
+        return n - lis_length
+
+    @staticmethod
     def get_successors(state):
         successors = {}
 
@@ -92,3 +110,41 @@ class EightPuzzle:
     @staticmethod
     def is_goal(state):
         return np.array_equal(EightPuzzle._target_state, state)
+
+    @staticmethod
+    def linear_conflicts_heuristic(state):
+        manhattan_distance = 0
+        linear_conflicts = 0
+
+        # Calculating Manhattan distance and row linear conflicts
+        for row in range(3):
+            row_candidates = []
+
+            for col in range(3):
+                tile = int(state[row, col])
+                if tile == 0:
+                    continue
+
+                target_row, target_col = divmod(tile, 3)
+                manhattan_distance += abs(target_row - row) + abs(target_col - col)
+                
+                if tile // 3 == row:
+                    row_candidates.append(tile)
+
+            linear_conflicts += EightPuzzle._count_conflicts(row_candidates)
+
+        # Calculating column linear conflicts
+        for col in range(3):
+            col_candidates = []
+
+            for row in range(3):
+                tile = int(state[row, col])
+                if tile == 0:
+                    continue
+
+                if tile % 3 == col:
+                    col_candidates.append(tile)
+
+            linear_conflicts += EightPuzzle._count_conflicts(col_candidates)
+                    
+        return manhattan_distance + 2 * linear_conflicts

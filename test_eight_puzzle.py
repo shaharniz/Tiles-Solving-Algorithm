@@ -93,6 +93,41 @@ class TestEightPuzzle(unittest.TestCase):
         not_the_goal = np.array([[3, 4, 5], [0, 1, 2], [6, 7, 8]], dtype=np.uint8)
         assert not EightPuzzle.is_goal(not_the_goal)
 
+    def test_linear_conflicts_heuristic_0(self):
+        state = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
+        
+        heuristic_value = EightPuzzle.linear_conflicts_heuristic(state)
+        # This is the goal state, so both Manhattan distance and linear conflicts are 0
+        
+        self.assertEqual(heuristic_value, 0)
+
+    def test_linear_conflicts_heuristic_1(self):
+        state = np.array([[0, 2, 1], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
+        
+        heuristic_value = EightPuzzle.linear_conflicts_heuristic(state)
+        # Manhattan distance is 2 (tiles 1 and 2 are swapped)
+        # There is 1 linear conflict (tiles 1 and 2 in the same row)
+
+        self.assertEqual(heuristic_value, 4)
+
+    def test_linear_conflicts_heuristic_2(self):
+        state = np.array([[0, 4, 2], [3, 1, 5], [6, 7, 8]], dtype=np.uint8)
+        
+        heuristic_value = EightPuzzle.linear_conflicts_heuristic(state)
+        # Manhattan distance is 2 (tiles 1 and 4 are swapped)
+        # There is 1 linear conflict (tiles 1 and 4 in the same column)
+
+        self.assertEqual(heuristic_value, 4)
+
+    def test_linear_conflicts_heuristic_3(self):
+        state = np.array([[2, 1, 3], [4, 5, 6], [0, 8, 7]], dtype=np.uint8)
+        
+        heuristic_value = EightPuzzle.linear_conflicts_heuristic(state)
+        # Manhattan distance is 12 (only tile 1 is in the correct position)
+        # There are 2 linear conflicts (in rows 0 and 2)
+
+        self.assertEqual(heuristic_value, 16)
+
 
 if __name__ == "__main__":
     unittest.main()
