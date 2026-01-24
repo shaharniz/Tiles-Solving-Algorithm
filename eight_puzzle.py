@@ -13,7 +13,11 @@ class Actions(Enum):
 class EightPuzzle:
     """
     Stateless definition of the 8puzzle problem.
-    Provides goal test, successor generation, inversions counting and state solvability validation.
+    Provides: 
+        - goal test
+        - node successors generation
+        - inversions counting and state solvability validation
+        - linear conflicts heuristic calculation
     """
 
     _target_state = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
