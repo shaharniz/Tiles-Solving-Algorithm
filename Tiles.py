@@ -46,9 +46,12 @@ def main(argv):
     initial_state = np.array(numbers, dtype=np.uint8).reshape(3, 3)
     EightPuzzle.validate_state_solvability(initial_state)
 
+    print()
     bfs(initial_state)
-    
-    # TODO
+    print()
+    astar(initial_state)
+    print()
 
+    
 if __name__ == "__main__":
     main(sys.argv)
