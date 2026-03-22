@@ -49,6 +49,10 @@ class TestEightPuzzle(unittest.TestCase):
         inversions = EightPuzzle.count_inversions(state)
         self.assertEqual(inversions, 1)
 
+    def test_target_state_is_immutable(self):
+        with self.assertRaises(ValueError):
+            EightPuzzle._target_state[0, 0] = 9
+
     def test_get_actions_as_step(self):
         prev_state = np.array([[1, 2, 3], [4, 0, 5], [6, 7, 8]], dtype=np.uint8)
         new_state = np.array([[1, 2, 3], [0, 4, 5], [6, 7, 8]], dtype=np.uint8)
@@ -127,6 +131,18 @@ class TestEightPuzzle(unittest.TestCase):
         # There are 2 linear conflicts (in rows 0 and 2)
 
         self.assertEqual(heuristic_value, 16)
+
+    def test_count_conflicts_empty_line(self):
+        self.assertEqual(EightPuzzle._count_conflicts([]), 0)
+
+    def test_count_conflicts_single_element(self):
+        self.assertEqual(EightPuzzle._count_conflicts([4]), 0)
+
+    def test_count_conflicts_sorted_line(self):
+        self.assertEqual(EightPuzzle._count_conflicts([1, 2, 3]), 0)
+
+    def test_count_conflicts_reversed_line(self):
+        self.assertEqual(EightPuzzle._count_conflicts([3, 2, 1]), 2)
 
 
 if __name__ == "__main__":

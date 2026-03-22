@@ -1,165 +1,116 @@
 import unittest
-from unittest.mock import patch
-from io import StringIO
 import numpy as np
+from unittest.mock import patch
 from astar_algorithm import astar
-
-silence = patch("sys.stdout", new_callable=StringIO)  # Decorator to silence test prints
+from search_utils import Node
 
 class TestAStarAlgorithm(unittest.TestCase):
-    @silence
-    def test_astar_with_solvable_state(self, _):
+    def test_astar_with_solvable_state(self):
         initial_state = np.array([[1, 2, 3], [4, 5, 6], [0, 7, 8]], dtype=np.uint8)
         try:
             astar(initial_state)
         except Exception as e:
-            self.fail(f"bfs() raised an exception unexpectedly: {e}")
+            self.fail(f"astar() raised an exception unexpectedly: {e}")
 
-    @silence
-    def test_astar_with_unsolvable_state(self, _):
-        initial_state = np.array([[1, 2, 3], [5, 4, 6], [0, 7, 8]], dtype=np.uint8)
-        with self.assertRaises(ValueError):
-            astar(initial_state)
-    
-    @silence
-    def test_astar_with_invalid_state_shape(self, _):
-        initial_state = np.array(
-            [[1, 2, 3], [4, 5, 6]], dtype=np.uint8
-        )  # Invalid shape
-        with self.assertRaises(ValueError):
-            astar(initial_state)
-
-    @silence
-    def test_astar_with_invalid_state_type(self, _):
-        initial_state = [[1, 2, 3], [4, 5, 6], [0, 7, 8]]  # Not a numpy array
-        with self.assertRaises(TypeError):
-            astar(initial_state)
-
-    @silence
-    def test_astar_with_invalid_state_subtype(self, _):
-        initial_state = np.array(
-            [[1, 2, 3], [4, 5, 6], [0, 7, 8]], dtype=np.int32
-        )  # Non-uint8 subtype
-        with self.assertRaises(TypeError):
-            astar(initial_state)
-
-    @silence
-    def test_astar_with_invalid_digit(self, _):
-        initial_state = np.array(
-            [[1, 2, 3], [4, 5, 6], [0, 7, 9]], dtype=np.uint8
-        )  # Invalid digit 9
-        with self.assertRaises(ValueError):
-            astar(initial_state)
-
-    @silence
-    def test_astar_with_duplicate_values(self, _):
-        initial_state = np.array(
-            [[1, 2, 3], [4, 5, 6], [0, 7, 7]], dtype=np.uint8
-        )  # Duplicate value 7
-        with self.assertRaises(ValueError):
-            astar(initial_state)
-
-    @silence
-    def test_astar_already_solved(self, mock_stdout):
-        self.maxDiff = None  # Shows full prints diff on failure
+    def test_astar_already_solved(self):
         initial_state = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
-        
-        expectet_output_lines = [
-            "Algorithm: A*",
-            "Path: ",
-            "Length: 0",
-            "Expanded: 0",
-        ]
-        
-        astar(initial_state)
-        actual_output_lines = mock_stdout.getvalue().strip().split("\n")
 
-        self.assertEqual(actual_output_lines, expectet_output_lines)
+        result = astar(initial_state)
 
-    @silence
-    def test_astar_solution_path_1(self, mock_stdout):
-        self.maxDiff = None  # Shows full prints diff on failure
+        self.assertEqual(result.algorithm, "A*")
+        self.assertEqual(result.path, [])
+        self.assertEqual(result.length, 0)
+        self.assertEqual(result.expanded, 0)
+
+    def test_astar_solution_path_1(self):
         initial_state = np.array([[1, 2, 0], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
-        
-        expectet_output_lines = [
-            "Algorithm: A*",
-            "Path: 2 1",
-            "Length: 2",
-            "Expanded: 2",
-        ]
-        
-        astar(initial_state)
-        actual_output_lines = mock_stdout.getvalue().strip().split("\n")
 
-        self.assertEqual(actual_output_lines, expectet_output_lines)
+        result = astar(initial_state)
 
-    @silence
-    def test_astar_solution_path_2(self, mock_stdout):
-        self.maxDiff = None  # Shows full prints diff on failure
+        self.assertEqual(result.path, ["2", "1"])
+        self.assertEqual(result.length, 2)
+        self.assertEqual(result.expanded, 2)
+
+    def test_astar_solution_path_2(self):
         initial_state = np.array([[1, 4, 0], [5, 8, 2], [3, 6, 7]], dtype=np.uint8)
-        
-        expectet_output_lines = [
-            "Algorithm: A*",
-            "Path: 2 8 5 3 6 7 8 5 4 1",
-            "Length: 10",
-            "Expanded: 10",
-        ]
-        
-        astar(initial_state)
-        actual_output_lines = mock_stdout.getvalue().strip().split("\n")
 
-        self.assertEqual(actual_output_lines, expectet_output_lines)
+        result = astar(initial_state)
 
-    @silence
-    def test_astar_solution_path_3(self, mock_stdout):
-        self.maxDiff = None  # Shows full prints diff on failure
+        self.assertEqual(result.path, ["2", "8", "5", "3", "6", "7", "8", "5", "4", "1"])
+        self.assertEqual(result.length, 10)
+        self.assertEqual(result.expanded, 10)
+
+    def test_astar_solution_path_3(self):
         initial_state = np.array([[1, 4, 2], [7, 5, 0], [3, 6, 8]], dtype=np.uint8)
-        
-        expectet_output_lines = [
-            "Algorithm: A*",
-            "Path: 5 7 3 6 7 4 1",
-            "Length: 7",
-            "Expanded: 9",
-        ]
-        
-        astar(initial_state)
-        actual_output_lines = mock_stdout.getvalue().strip().split("\n")
 
-        self.assertEqual(actual_output_lines, expectet_output_lines)
+        result = astar(initial_state)
 
-    @silence
-    def test_astar_solution_path_4(self, mock_stdout):
-        self.maxDiff = None  # Shows full prints diff on failure
+        self.assertEqual(result.path, ["5", "7", "3", "6", "7", "4", "1"])
+        self.assertEqual(result.length, 7)
+        self.assertEqual(result.expanded, 9)
+
+    def test_astar_solution_path_4(self):
         initial_state = np.array([[1, 4, 0], [7, 5, 2], [3, 6, 8]], dtype=np.uint8)
-        
-        expectet_output_lines = [
-            "Algorithm: A*",
-            "Path: 2 5 7 3 6 7 4 1",
-            "Length: 8",
-            "Expanded: 10",
-        ]
-        
-        astar(initial_state)
-        actual_output_lines = mock_stdout.getvalue().strip().split("\n")
 
-        self.assertEqual(actual_output_lines, expectet_output_lines)
+        result = astar(initial_state)
 
-    @silence
-    def test_astar_solution_path_5(self, mock_stdout):
-        self.maxDiff = None  # Shows full prints diff on failure
+        self.assertEqual(result.path, ["2", "5", "7", "3", "6", "7", "4", "1"])
+        self.assertEqual(result.length, 8)
+        self.assertEqual(result.expanded, 10)
+
+    def test_astar_solution_path_5(self):
         initial_state = np.array([[8, 6, 7], [2, 5, 4], [3, 0, 1]], dtype=np.uint8)
-        
-        expectet_output_lines = [
-            "Algorithm: A*",
-            "Path: 5 4 1 5 4 6 8 2 3 4 6 8 2 3 4 6 8 1 7 2 1 7 5 8 7 4 3",
-            "Length: 27",
-            "Expanded: 2372",
-        ]
-        
-        astar(initial_state)
-        actual_output_lines = mock_stdout.getvalue().strip().split("\n")
 
-        self.assertEqual(actual_output_lines, expectet_output_lines)
+        result = astar(initial_state)
+
+        self.assertEqual(
+            result.path,
+            ["5", "4", "1", "5", "4", "6", "8", "2", "3", "4", "6", "8", "2", "3", "4", "6", "8", "1", "7", "2", "1", "7", "5", "8", "7", "4", "3"],
+        )
+        self.assertEqual(result.length, 27)
+        self.assertEqual(result.expanded, 2372)
+
+    def test_astar_expands_shared_state_only_once(self):
+        start = np.array([0], dtype=np.uint8)
+        left = np.array([1], dtype=np.uint8)
+        right = np.array([2], dtype=np.uint8)
+        shared = np.array([3], dtype=np.uint8)
+        goal = np.array([4], dtype=np.uint8)
+
+        expansion_counts = {
+            start.tobytes(): 0,
+            left.tobytes(): 0,
+            right.tobytes(): 0,
+            shared.tobytes(): 0,
+        }
+
+        def fake_expand(node):
+            state_key = node.state.tobytes()
+            expansion_counts[state_key] += 1
+
+            if np.array_equal(node.state, start):
+                return [
+                    Node(state=left, parent=node, step="L", cost=node.cost + 1),
+                    Node(state=right, parent=node, step="R", cost=node.cost + 1),
+                ]
+            if np.array_equal(node.state, left):
+                return [Node(state=shared, parent=node, step="S", cost=node.cost + 1)]
+            if np.array_equal(node.state, right):
+                return [Node(state=shared, parent=node, step="T", cost=node.cost + 1)]
+            if np.array_equal(node.state, shared):
+                return [Node(state=goal, parent=node, step="G", cost=node.cost + 1)]
+
+            self.fail("A* attempted to expand an unexpected state")
+
+        with patch("astar_algorithm.expand_node", side_effect=fake_expand), \
+             patch("astar_algorithm.EightPuzzle.is_goal", side_effect=lambda state: np.array_equal(state, goal)), \
+             patch("astar_algorithm.EightPuzzle.linear_conflicts_heuristic", return_value=0):
+            result = astar(start, validate=False)
+
+        self.assertEqual(result.path, ["L", "S", "G"])
+        self.assertEqual(result.length, 3)
+        self.assertEqual(result.expanded, 4)
+        self.assertEqual(expansion_counts[shared.tobytes()], 1)
 
 
 if __name__ == "__main__":

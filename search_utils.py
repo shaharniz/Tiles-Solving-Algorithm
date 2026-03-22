@@ -1,4 +1,4 @@
-from collections import deque
+from dataclasses import dataclass
 from eight_puzzle import EightPuzzle
 
 
@@ -10,18 +10,32 @@ class Node:
         self.cost = cost
 
 
-def print_path(node):
+@dataclass(frozen=True)
+class SearchResult:
+    algorithm: str
+    path: list[str]
+    length: int
+    expanded: int
+
+
+def build_path(node):
     path = []
     while node:
         if node.step is not None:
             path.append(node.step)
         node = node.parent
-    path.reverse()
-    print("Path:", " ".join(path))
+    return list(reversed(path))
+
+
+def print_result(result):
+    print(f"Algorithm: {result.algorithm}")
+    print("Path:", " ".join(result.path))
+    print(f"Length: {result.length}")
+    print(f"Expanded: {result.expanded}")
 
 
 def expand_node(node):
-    expanded_node_queue = deque()
+    expanded_nodes = []
     for step, next_state in EightPuzzle.get_successors(node.state).items():
         child = Node(
             state=next_state,
@@ -29,6 +43,6 @@ def expand_node(node):
             step=step,
             cost=node.cost + 1,
         )
-        expanded_node_queue.append(child)
+        expanded_nodes.append(child)
 
-    return expanded_node_queue
+    return expanded_nodes

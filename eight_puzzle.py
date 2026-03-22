@@ -21,6 +21,7 @@ class EightPuzzle:
     """
 
     _target_state = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
+    _target_state.flags.writeable = False
 
     @staticmethod
     def validate_state_solvability(state):
@@ -56,8 +57,8 @@ class EightPuzzle:
         # Remove the empty tile
         flat = [x for x in flat if x != 0]
         inversions = 0
-        for i in range(8):
-            for j in range(i + 1, 8):
+        for i in range(len(flat)):
+            for j in range(i + 1, len(flat)):
                 if flat[i] > flat[j]:
                     inversions += 1
 
@@ -74,7 +75,7 @@ class EightPuzzle:
     def _count_conflicts(line):
         if not line:
             return 0
-        
+
         n = len(line)
 
         # Calculating Longest Increasing Subsequence (LIS) length
@@ -84,7 +85,7 @@ class EightPuzzle:
             for prev in range(curr):
                 if line[prev] < line[curr]:
                     dp[curr] = max(dp[curr], dp[prev] + 1)
-        
+
         lis_length = max(dp)
         return n - lis_length
 
@@ -111,9 +112,9 @@ class EightPuzzle:
 
         return successors
 
-    @staticmethod
-    def is_goal(state):
-        return np.array_equal(EightPuzzle._target_state, state)
+    @classmethod
+    def is_goal(cls, state):
+        return np.array_equal(cls._target_state, state)
 
     @staticmethod
     def linear_conflicts_heuristic(state):
@@ -121,7 +122,7 @@ class EightPuzzle:
         The idea is to calculate the Manhattan distance and add 2 times the number of linear conflicts.
         A linear conflict occurs when two tiles are in their goal row or column but are reversed relative to their goal positions.
         The linear conflicts are multiplied by 2 because each conflict will require at least two moves, additional to the Manhattan distance, to solve the puzzle (moving away from the current row/col to resolve the reversed positions and returning back).
-        Both row and column conflicts are considered because they are independent (if a tile is in it's goal row and column then ther's no conflict).
+        Both row and column conflicts are considered because they are independent (if a tile is in its goal row and column then there's no conflict).
         """
         manhattan_distance = 0
         linear_conflicts = 0
@@ -137,7 +138,7 @@ class EightPuzzle:
 
                 target_row, target_col = divmod(tile, 3)
                 manhattan_distance += abs(target_row - row) + abs(target_col - col)
-                
+
                 if tile // 3 == row:
                     row_candidates.append(tile)
 
@@ -156,5 +157,5 @@ class EightPuzzle:
                     col_candidates.append(tile)
 
             linear_conflicts += EightPuzzle._count_conflicts(col_candidates)
-                    
+
         return manhattan_distance + 2 * linear_conflicts
