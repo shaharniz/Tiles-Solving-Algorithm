@@ -1,20 +1,20 @@
-from eight_puzzle import EightPuzzle
+from eight_puzzle import is_goal, linear_conflicts_heuristic, validate_state_solvability
 from search_utils import Node, SearchResult, build_path, expand_node
 import heapq
 
 
 def astar(initial_state, validate=True):
     if validate:
-        EightPuzzle.validate_state_solvability(initial_state)
+        validate_state_solvability(initial_state)
 
-    if EightPuzzle.is_goal(initial_state):
+    if is_goal(initial_state):
         return SearchResult(algorithm="A*", path=[], length=0, expanded=0)
 
     # Priority queue with tuples (f_cost, tie_breaker, node)
     # counter is a unique id for each tuple and acts as a tie_breaker to avoid comparison of Node objects when f_costs are equal
     counter = 0
     root = Node(state=initial_state)
-    h_root = EightPuzzle.linear_conflicts_heuristic(root.state)
+    h_root = linear_conflicts_heuristic(root.state)
     f_root = root.cost + h_root
 
     queue = [(f_root, counter, root)]
@@ -31,7 +31,7 @@ def astar(initial_state, validate=True):
         if node.cost > best_costs.get(state_key, float("inf")) or state_key in explored:
             continue
 
-        if EightPuzzle.is_goal(node.state):
+        if is_goal(node.state):
             return SearchResult(
                 algorithm="A*",
                 path=build_path(node),
@@ -48,7 +48,7 @@ def astar(initial_state, validate=True):
                 continue
 
             best_costs[child_key] = child.cost
-            h_cost = EightPuzzle.linear_conflicts_heuristic(child.state)
+            h_cost = linear_conflicts_heuristic(child.state)
             f_cost = child.cost + h_cost
             counter += 1
             heapq.heappush(queue, (f_cost, counter, child))

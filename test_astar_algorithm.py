@@ -103,8 +103,8 @@ class TestAStarAlgorithm(unittest.TestCase):
             self.fail("A* attempted to expand an unexpected state")
 
         with patch("astar_algorithm.expand_node", side_effect=fake_expand), \
-             patch("astar_algorithm.EightPuzzle.is_goal", side_effect=lambda state: np.array_equal(state, goal)), \
-             patch("astar_algorithm.EightPuzzle.linear_conflicts_heuristic", return_value=0):
+             patch("astar_algorithm.is_goal", side_effect=lambda state: np.array_equal(state, goal)), \
+             patch("astar_algorithm.linear_conflicts_heuristic", return_value=0):
             result = astar(start, validate=False)
 
         self.assertEqual(result.path, ["L", "S", "G"])

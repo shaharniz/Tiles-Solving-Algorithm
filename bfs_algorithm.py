@@ -1,13 +1,13 @@
 from collections import deque
-from eight_puzzle import EightPuzzle
+from eight_puzzle import is_goal, validate_state_solvability
 from search_utils import Node, SearchResult, build_path, expand_node
 
 
 def bfs(initial_state, validate=True):
     if validate:
-        EightPuzzle.validate_state_solvability(initial_state)
+        validate_state_solvability(initial_state)
 
-    if EightPuzzle.is_goal(initial_state):
+    if is_goal(initial_state):
         return SearchResult(algorithm="BFS", path=[], length=0, expanded=0)
 
     root = Node(state=initial_state)
@@ -30,7 +30,7 @@ def bfs(initial_state, validate=True):
             if child_key in explored or child_key in frontier:
                 continue
 
-            if EightPuzzle.is_goal(child.state):
+            if is_goal(child.state):
                 return SearchResult(
                     algorithm="BFS",
                     path=build_path(child),

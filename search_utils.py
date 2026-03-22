@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from eight_puzzle import EightPuzzle
+from eight_puzzle import get_successors
 
 
 class Node:
@@ -36,7 +36,7 @@ def print_result(result):
 
 def expand_node(node):
     expanded_nodes = []
-    for step, next_state in EightPuzzle.get_successors(node.state).items():
+    for step, next_state in get_successors(node.state).items():
         child = Node(
             state=next_state,
             parent=node,

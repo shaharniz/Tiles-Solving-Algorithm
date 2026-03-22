@@ -6,7 +6,7 @@ validates and solves it using BFS and A* algorithms (if solvable).
 """
 import sys
 import numpy as np
-from eight_puzzle import EightPuzzle
+from eight_puzzle import validate_state_solvability
 from bfs_algorithm import bfs
 from astar_algorithm import astar
 from search_utils import print_result
@@ -21,7 +21,7 @@ def main(argv):
         raise ValueError("Expected 9 arguments that must contain each integers from 0 to 8 exactly once.")
 
     initial_state = np.array(numbers, dtype=np.uint8).reshape(3, 3)
-    EightPuzzle.validate_state_solvability(initial_state)
+    validate_state_solvability(initial_state)
 
     print_result(bfs(initial_state, validate=False))
     print_result(astar(initial_state, validate=False))
