@@ -1,6 +1,34 @@
 # Tiles Solving Algorithm (8-Puzzle)
 
-This project solves the 8-puzzle using Breadth-First Search and A* as part of the Open University course "Introduction to Artificial Intelligence" (Assignment 11).
+[![Tests](https://github.com/shaharniz/Tiles-Solving-Algorithm/actions/workflows/tests.yml/badge.svg)](https://github.com/shaharniz/Tiles-Solving-Algorithm/actions/workflows/tests.yml)
+
+This project is a Python implementation of the classic 8-puzzle solved with two state-space search strategies:
+- Breadth-First Search as an uninformed baseline
+- A* with a linear conflicts heuristic as the informed search strategy
+
+The repository is structured as a small installable package with:
+- a reusable solver package in `tiles_solver/`
+- an assignment-compatible CLI entrypoint in `Tiles.py`
+- automated tests in `tests/`
+- a benchmark module for comparing BFS and A*
+
+It started as an Open University assignment for "Introduction to Artificial Intelligence" (Assignment 11), but the codebase has been refactored into a cleaner package-style project.
+
+## Benchmark Snapshot
+The current benchmark highlights the practical difference between uninformed and heuristic search on the same problem set:
+
+| State | Solution Length | BFS Expanded | A* Expanded | BFS Time (ms) | A* Time (ms) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Basic | 2 | 2 | 2 | 0.898 | 0.120 |
+| Easy | 7 | 69 | 9 | 1.307 | 0.282 |
+| Medium | 14 | 1851 | 34 | 31.236 | 0.860 |
+| Hard | 27 | 170471 | 2372 | 3197.992 | 64.369 |
+
+The benchmark can be reproduced with:
+
+```bash
+python -m tiles_solver.benchmark
+```
 
 ## Assignment Summary
 The assignment was to implement a modular Python program named `Tiles.py` that solves the 8-puzzle as a state-space search problem.
@@ -68,21 +96,8 @@ Expanded: 10
 python -m unittest discover -s tests
 ```
 
-## Benchmark
-A small benchmark/demo script is included to compare BFS and A* on representative states:
-
-```bash
-python -m tiles_solver.benchmark
-```
-
 ## Development
-The repository keeps the original assignment entrypoint in `Tiles.py`, but the package entrypoint is the preferred interface:
-
-```bash
-python -m tiles_solver 1 4 0 5 8 2 3 6 7
-```
-
-If the package is installed in editable mode, the console script is also available:
+The repository keeps the original assignment entrypoint in `Tiles.py`, but the package can also be used through the installed console script:
 
 ```bash
 tiles-solver 1 4 0 5 8 2 3 6 7
@@ -109,8 +124,6 @@ Main files:
 - `tests/`: unit tests for algorithms, utilities, and puzzle logic.
 
 Internally, both `bfs()` and `astar()` return a structured result object containing the algorithm name, path, solution length, and expanded node count. The CLI layer is responsible for printing that result. This keeps the search logic separate from presentation and makes the code easier to test.
-
-The project uses a package-oriented layout: reusable solver code lives in `tiles_solver/`, tests live in `tests/`, and `Tiles.py` remains as a thin assignment-compatible wrapper.
 
 ## 2. Problem Representation
 ### State Representation
