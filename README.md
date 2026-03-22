@@ -34,20 +34,20 @@ Requirements:
 Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip install -e .
 ```
 
 ## Running The Program
-Run `Tiles.py` with 9 integers in row-major order. `0` represents the blank tile.
+Run the package CLI with 9 integers in row-major order. `0` represents the blank tile.
 
 ```bash
-python Tiles.py <tile_0> <tile_1> ... <tile_8>
+python -m tiles_solver <tile_0> <tile_1> ... <tile_8>
 ```
 
 Example:
 
 ```bash
-python Tiles.py 1 4 0 5 8 2 3 6 7
+python -m tiles_solver 1 4 0 5 8 2 3 6 7
 ```
 
 Sample output:
@@ -65,7 +65,26 @@ Expanded: 10
 
 ## Running Tests
 ```bash
-python -m unittest discover
+python -m unittest discover -s tests
+```
+
+## Development
+The repository keeps the original assignment entrypoint in `Tiles.py`, but the package entrypoint is the preferred interface:
+
+```bash
+python -m tiles_solver 1 4 0 5 8 2 3 6 7
+```
+
+If the package is installed in editable mode, the console script is also available:
+
+```bash
+tiles-solver 1 4 0 5 8 2 3 6 7
+```
+
+Tooling is configured in `pyproject.toml`. The project currently includes package metadata and Ruff configuration, and the test suite can be run with:
+
+```bash
+python -m unittest discover -s tests
 ```
 
 ## 1. General Program Description

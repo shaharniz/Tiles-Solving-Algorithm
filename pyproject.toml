@@ -1,0 +1,12 @@
+[project]
+name = "tiles-solver"
+version = "0.1.0"
+description = "8-puzzle solver using BFS and A* with a linear conflicts heuristic"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy==2.4.1",
+]
+
+[project.scripts]
+tiles-solver = "tiles_solver.cli:run"
