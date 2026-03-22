@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from eight_puzzle import get_successors
+from .eight_puzzle import get_successors
 
 
 class Node:

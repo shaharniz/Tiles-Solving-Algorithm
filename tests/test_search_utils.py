@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from search_utils import Node, SearchResult, build_path, expand_node
+from tiles_solver.search_utils import Node, SearchResult, build_path, expand_node
 
 
 class TestSearchUtils(unittest.TestCase):

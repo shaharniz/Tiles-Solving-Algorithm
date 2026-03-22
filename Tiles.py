@@ -6,10 +6,10 @@ validates and solves it using BFS and A* algorithms (if solvable).
 """
 import sys
 import numpy as np
-from eight_puzzle import validate_state_solvability
-from bfs_algorithm import bfs
-from astar_algorithm import astar
-from search_utils import print_result
+from tiles_solver.eight_puzzle import validate_state_solvability
+from tiles_solver.bfs_algorithm import bfs
+from tiles_solver.astar_algorithm import astar
+from tiles_solver.search_utils import print_result
 
 
 def main(argv):

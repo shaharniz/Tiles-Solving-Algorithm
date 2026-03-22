@@ -1,6 +1,6 @@
 from collections import deque
-from eight_puzzle import is_goal, validate_state_solvability
-from search_utils import Node, SearchResult, build_path, expand_node
+from .eight_puzzle import is_goal, validate_state_solvability
+from .search_utils import Node, SearchResult, build_path, expand_node
 
 
 def bfs(initial_state, validate=True):

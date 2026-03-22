@@ -1,5 +1,5 @@
-from eight_puzzle import is_goal, linear_conflicts_heuristic, validate_state_solvability
-from search_utils import Node, SearchResult, build_path, expand_node
+from .eight_puzzle import is_goal, linear_conflicts_heuristic, validate_state_solvability
+from .search_utils import Node, SearchResult, build_path, expand_node
 import heapq
 
 

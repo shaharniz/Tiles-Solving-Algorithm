@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 from unittest.mock import patch
-from astar_algorithm import astar
-from search_utils import Node
+from tiles_solver.astar_algorithm import astar
+from tiles_solver.search_utils import Node
 
 class TestAStarAlgorithm(unittest.TestCase):
     def test_astar_with_solvable_state(self):
@@ -102,9 +102,9 @@ class TestAStarAlgorithm(unittest.TestCase):
 
             self.fail("A* attempted to expand an unexpected state")
 
-        with patch("astar_algorithm.expand_node", side_effect=fake_expand), \
-             patch("astar_algorithm.is_goal", side_effect=lambda state: np.array_equal(state, goal)), \
-             patch("astar_algorithm.linear_conflicts_heuristic", return_value=0):
+        with patch("tiles_solver.astar_algorithm.expand_node", side_effect=fake_expand), \
+             patch("tiles_solver.astar_algorithm.is_goal", side_effect=lambda state: np.array_equal(state, goal)), \
+             patch("tiles_solver.astar_algorithm.linear_conflicts_heuristic", return_value=0):
             result = astar(start, validate=False)
 
         self.assertEqual(result.path, ["L", "S", "G"])

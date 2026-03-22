@@ -73,11 +73,11 @@ The program is modular and split into problem definition, shared search utilitie
 
 Main files:
 - `Tiles.py`: command-line entry point. Parses the initial state, validates it, runs BFS and A*, and prints results in the assignment format.
-- `eight_puzzle.py`: defines the 8-puzzle problem, including the target state, successor generation, inversion counting, solvability validation, and the heuristic.
-- `search_utils.py`: shared search helpers such as the `Node` class, path reconstruction, result printing, and node expansion.
-- `bfs_algorithm.py`: Breadth-First Search implementation.
-- `astar_algorithm.py`: A* implementation.
-- `test_*.py`: unit tests for algorithms, utilities, and puzzle logic.
+- `tiles_solver/eight_puzzle.py`: defines the 8-puzzle problem, including the target state, successor generation, inversion counting, solvability validation, and the heuristic.
+- `tiles_solver/search_utils.py`: shared search helpers such as the `Node` class, path reconstruction, result printing, and node expansion.
+- `tiles_solver/bfs_algorithm.py`: Breadth-First Search implementation.
+- `tiles_solver/astar_algorithm.py`: A* implementation.
+- `tests/`: unit tests for algorithms, utilities, and puzzle logic.
 
 Internally, both `bfs()` and `astar()` return a structured result object containing the algorithm name, path, solution length, and expanded node count. The CLI layer is responsible for printing that result. This keeps the search logic separate from presentation and makes the code easier to test.
 

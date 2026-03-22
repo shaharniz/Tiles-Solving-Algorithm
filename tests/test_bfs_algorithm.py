@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from bfs_algorithm import bfs
+from tiles_solver.bfs_algorithm import bfs
 
 class TestBFSAlgorithm(unittest.TestCase):
     def test_bfs_with_solvable_state(self):

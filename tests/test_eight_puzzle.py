@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-import eight_puzzle
+from tiles_solver import eight_puzzle
 
 
 class TestEightPuzzle(unittest.TestCase):
