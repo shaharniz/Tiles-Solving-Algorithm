@@ -1,9 +1,9 @@
 from collections import deque
-from .eight_puzzle import is_goal, validate_state_solvability
+from .eight_puzzle import State, is_goal, validate_state_solvability
 from .search_utils import Node, SearchResult, build_path, expand_node
 
 
-def bfs(initial_state, validate=True):
+def bfs(initial_state: State, validate: bool = True) -> SearchResult:
     if validate:
         validate_state_solvability(initial_state)
 
@@ -13,7 +13,7 @@ def bfs(initial_state, validate=True):
     root = Node(state=initial_state)
     queue = deque([root])
     frontier = {root.state.tobytes()}
-    explored = set()
+    explored: set[bytes] = set()
     expanded_count = 0
 
     while queue:

@@ -1,9 +1,9 @@
-from .eight_puzzle import is_goal, linear_conflicts_heuristic, validate_state_solvability
+from .eight_puzzle import State, is_goal, linear_conflicts_heuristic, validate_state_solvability
 from .search_utils import Node, SearchResult, build_path, expand_node
 import heapq
 
 
-def astar(initial_state, validate=True):
+def astar(initial_state: State, validate: bool = True) -> SearchResult:
     if validate:
         validate_state_solvability(initial_state)
 
@@ -18,8 +18,8 @@ def astar(initial_state, validate=True):
     f_root = root.cost + h_root
 
     queue = [(f_root, counter, root)]
-    explored = set()
-    best_costs = {root.state.tobytes(): 0}
+    explored: set[bytes] = set()
+    best_costs: dict[bytes, int] = {root.state.tobytes(): 0}
     expanded_count = 0
 
     while queue:

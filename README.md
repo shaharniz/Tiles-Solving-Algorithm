@@ -68,6 +68,13 @@ Expanded: 10
 python -m unittest discover -s tests
 ```
 
+## Benchmark
+A small benchmark/demo script is included to compare BFS and A* on representative states:
+
+```bash
+python -m tiles_solver.benchmark
+```
+
 ## Development
 The repository keeps the original assignment entrypoint in `Tiles.py`, but the package entrypoint is the preferred interface:
 
@@ -81,17 +88,20 @@ If the package is installed in editable mode, the console script is also availab
 tiles-solver 1 4 0 5 8 2 3 6 7
 ```
 
-Tooling is configured in `pyproject.toml`. The project currently includes package metadata and Ruff configuration, and the test suite can be run with:
+Project metadata is configured in `pyproject.toml`, and the repository includes a GitHub Actions workflow that runs the test suite on every push and pull request. The test suite can be run locally with:
 
 ```bash
 python -m unittest discover -s tests
 ```
+
+The workflow is defined in `.github/workflows/tests.yml` and currently installs the package in editable mode before running the full unittest suite.
 
 ## 1. General Program Description
 The program is modular and split into problem definition, shared search utilities, search algorithms, and tests.
 
 Main files:
 - `Tiles.py`: command-line entry point. Parses the initial state, validates it, runs BFS and A*, and prints results in the assignment format.
+- `tiles_solver/benchmark.py`: simple benchmark/demo script for comparing BFS and A* on sample states.
 - `tiles_solver/eight_puzzle.py`: defines the 8-puzzle problem, including the target state, successor generation, inversion counting, solvability validation, and the heuristic.
 - `tiles_solver/search_utils.py`: shared search helpers such as the `Node` class, path reconstruction, result printing, and node expansion.
 - `tiles_solver/bfs_algorithm.py`: Breadth-First Search implementation.
@@ -99,6 +109,8 @@ Main files:
 - `tests/`: unit tests for algorithms, utilities, and puzzle logic.
 
 Internally, both `bfs()` and `astar()` return a structured result object containing the algorithm name, path, solution length, and expanded node count. The CLI layer is responsible for printing that result. This keeps the search logic separate from presentation and makes the code easier to test.
+
+The project uses a package-oriented layout: reusable solver code lives in `tiles_solver/`, tests live in `tests/`, and `Tiles.py` remains as a thin assignment-compatible wrapper.
 
 ## 2. Problem Representation
 ### State Representation

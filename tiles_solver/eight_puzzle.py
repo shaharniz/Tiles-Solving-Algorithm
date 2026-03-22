@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import numpy as np
 from enum import Enum
+from numpy.typing import NDArray
 
 
 class Actions(Enum):
@@ -10,11 +13,12 @@ class Actions(Enum):
     DOWN = (1, 0)
 
 
-TARGET_STATE = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
+State = NDArray[np.uint8]
+TARGET_STATE: State = np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.uint8)
 TARGET_STATE.flags.writeable = False
 
 
-def validate_state_solvability(state):
+def validate_state_solvability(state: State) -> bool:
     """Check if a state is 3x3 and solvable."""
 
     # Validate type, subtype and shape
@@ -37,7 +41,7 @@ def validate_state_solvability(state):
     return True
 
 
-def count_inversions(state):
+def count_inversions(state: State) -> int:
     """
     Count inversions in the puzzle state, assuming state is valid.
     """
@@ -53,14 +57,14 @@ def count_inversions(state):
     return inversions
 
 
-def _get_action_as_step(prev_state, new_state):
+def _get_action_as_step(prev_state: State, new_state: State) -> str:
     diff = prev_state.astype(np.int8) - new_state.astype(np.int8)
     positive_nonzero = np.max(diff)
 
     return str(positive_nonzero)
 
 
-def _count_conflicts(line):
+def _count_conflicts(line: list[int]) -> int:
     if not line:
         return 0
 
@@ -78,8 +82,8 @@ def _count_conflicts(line):
     return n - lis_length
 
 
-def get_successors(state):
-    successors = {}
+def get_successors(state: State) -> dict[str, State]:
+    successors: dict[str, State] = {}
 
     row, col = np.argwhere(state == 0)[0]
 
@@ -101,11 +105,11 @@ def get_successors(state):
     return successors
 
 
-def is_goal(state):
+def is_goal(state: State) -> bool:
     return np.array_equal(TARGET_STATE, state)
 
 
-def linear_conflicts_heuristic(state):
+def linear_conflicts_heuristic(state: State) -> int:
     """
     The idea is to calculate the Manhattan distance and add 2 times the number of linear conflicts.
     A linear conflict occurs when two tiles are in their goal row or column but are reversed relative to their goal positions.
