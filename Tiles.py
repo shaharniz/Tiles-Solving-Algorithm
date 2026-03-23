@@ -1,6 +1,6 @@
 """Assignment-compatible wrapper for the tiles_solver package CLI."""
 
-from tiles_solver.cli import run
+from tiles_solver.cli import main, run
 
 
 if __name__ == "__main__":
