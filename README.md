@@ -103,13 +103,7 @@ The repository keeps the original assignment entrypoint in `Tiles.py`, but the p
 tiles-solver 1 4 0 5 8 2 3 6 7
 ```
 
-Project metadata is configured in `pyproject.toml`, and the repository includes a GitHub Actions workflow that runs the test suite on every push and pull request. The test suite can be run locally with:
-
-```bash
-python -m unittest discover -s tests
-```
-
-The workflow is defined in `.github/workflows/tests.yml` and currently installs the package in editable mode before running the full unittest suite.
+Project metadata is configured in `pyproject.toml`, and the repository includes a GitHub Actions workflow that runs the test suite on every push and pull request. The workflow is defined in `.github/workflows/tests.yml` and currently installs the package in editable mode before running the full unittest suite.
 
 ## 1. General Program Description
 The program is modular and split into problem definition, shared search utilities, search algorithms, and tests.
